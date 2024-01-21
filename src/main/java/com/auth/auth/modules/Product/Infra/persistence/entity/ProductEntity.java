@@ -61,7 +61,7 @@ public class ProductEntity implements Serializable {
      * Categoria à qual o produto pertence.
      */
     @ManyToOne
-    @JoinColumn(name = "idcategoria", referencedColumnName = "idcategoria", nullable = false)
+    @JoinColumn(name = "id_categoria", referencedColumnName = "id_categoria", nullable = false)
     private ProductCategoryEntity category;
 
     /**

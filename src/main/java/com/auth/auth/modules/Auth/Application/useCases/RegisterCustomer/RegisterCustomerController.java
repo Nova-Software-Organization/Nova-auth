@@ -15,9 +15,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.auth.auth.modules.Auth.Application.DTOs.request.RegistrationRequest;
 import com.auth.auth.modules.Auth.Application.DTOs.response.ResponseMessageDTO;
 import com.auth.auth.modules.Auth.Domain.exception.RegistrationFailedException;
-import com.auth.auth.modules.Customer.Application.DTOs.registration.RegistrationRequest;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
