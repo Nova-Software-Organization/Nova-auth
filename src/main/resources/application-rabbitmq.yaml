@@ -1,0 +1,17 @@
+# Configurações de produção
+spring:
+  rabbitmq:
+    producer:
+      exchange-name: my_exchange
+      routing-key: my_routing_key
+
+# Configurações de consumo
+my-consumer:
+  rabbitmq:
+    queue-name: my_queue
+    listener:
+      simple:
+        acknowledge-mode: MANUAL
+        retry:
+          enabled: true
+          max-attempts: 3

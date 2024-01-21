@@ -1,0 +1,25 @@
+/**
+ * ----------------------------------------------------------------------------
+ * Autor: Kaue de Matos
+ * Empresa: Nova Software
+ * Propriedade da Empresa: Todos os direitos reservados
+ * ----------------------------------------------------------------------------
+ */
+package com.auth.auth.modules.Auth.Application.DTOs.user;
+
+import java.util.Set;
+
+import com.auth.auth.modules.Auth.Domain.Enum.CustomGrantedAuthority;
+import com.auth.auth.modules.Customer.Application.DTOs.registration.CustomerDTO;
+
+import lombok.Data;
+
+@Data
+public class UserDTO {
+    private Long id;
+    private String username;
+    private String password;
+    private String email;
+    private Set<CustomGrantedAuthority> roles;
+    private CustomerDTO customerDTO;
+}
