@@ -21,26 +21,38 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import jakarta.ws.rs.ext.ParamConverter.Lazy;
+import lombok.EqualsAndHashCode;
 
+@Lazy
 @Entity
 @Table(name = "item_carrinho")
+@EqualsAndHashCode(of = "idCartItem")
 public class CartItemEntity implements Serializable {
-
     private static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_carrinho_item")
-    private Long id;
+    private Long idCartItem;
 
+    /**
+     * entidade carrinho que se relaciona com carrinho item
+     */
     @ManyToOne
     @JoinColumn(name = "id_carrinho")
     private CartEntity cartEntity;
 
+    /*
+     * produtos que estão dentro do carrinho
+     */
     @ManyToOne
     @JoinColumn(name = "id_produto")
     private ProductEntity product;
 
+    /**
+     * quantidade de items que estão dentro do carrinho
+     */
     @Column(name = "quantidade")
     private int quantity;
 }

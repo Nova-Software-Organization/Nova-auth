@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.auth.auth.modules.Auth.Application.DTOs.token.AuthAccessToken;
-import com.auth.auth.modules.Auth.Infra.validation.utils.JwtUtills;
+import com.auth.auth.modules.Auth.Infra.utils.JwtUtills;
 
 import io.jsonwebtoken.JwtException;
 import io.swagger.v3.oas.annotations.Operation;

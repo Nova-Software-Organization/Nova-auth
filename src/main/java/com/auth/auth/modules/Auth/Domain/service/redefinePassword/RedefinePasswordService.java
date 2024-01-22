@@ -21,7 +21,7 @@ import com.auth.auth.modules.Auth.Domain.provider.resetPassword.CodeExpiration;
 import com.auth.auth.modules.Auth.Domain.service.cryptography.AnonymizationService;
 import com.auth.auth.modules.Auth.Infra.persistence.entity.UserEntity;
 import com.auth.auth.modules.Auth.Infra.persistence.repository.UserRepository;
-import com.auth.auth.modules.Auth.Infra.validation.utils.PasswordValidator;
+import com.auth.auth.modules.Auth.Infra.validation.PasswordValidator;
 
 import lombok.extern.slf4j.Slf4j;
 

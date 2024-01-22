@@ -24,17 +24,20 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.ws.rs.ext.ParamConverter.Lazy;
+import lombok.EqualsAndHashCode;
 
+@Lazy
 @Entity
 @Table(name = "carrinho")
+@EqualsAndHashCode(of = "idCart")
 public class CartEntity implements Serializable {
-
     private static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_carrinho")
-    private Long id;
+    private Long idCart;
 
     @ManyToOne
     @JoinColumn(name = "id_cliente")

@@ -5,7 +5,7 @@
  * Propriedade da Empresa: Todos os direitos reservados
  * ----------------------------------------------------------------------------
  */
-package com.auth.auth.modules.Auth.Infra.validation.utils;
+package com.auth.auth.modules.Auth.Infra.validation;
 
 import org.springframework.stereotype.Component;
 

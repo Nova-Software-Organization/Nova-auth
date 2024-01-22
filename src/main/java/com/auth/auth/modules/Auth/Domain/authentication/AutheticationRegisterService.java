@@ -30,9 +30,9 @@ import com.auth.auth.modules.Auth.Domain.service.user.UserService;
 import com.auth.auth.modules.Auth.Domain.token.GeneratedTokenAuthorizationService;
 import com.auth.auth.modules.Auth.Infra.persistence.entity.UserEntity;
 import com.auth.auth.modules.Auth.Infra.persistence.repository.UserRepository;
-import com.auth.auth.modules.Auth.Infra.validation.utils.DocumentValidator;
-import com.auth.auth.modules.Auth.Infra.validation.utils.EmailValidator;
-import com.auth.auth.modules.Auth.Infra.validation.utils.PasswordValidator;
+import com.auth.auth.modules.Auth.Infra.validation.DocumentValidator;
+import com.auth.auth.modules.Auth.Infra.validation.EmailValidator;
+import com.auth.auth.modules.Auth.Infra.validation.PasswordValidator;
 import com.auth.auth.modules.Customer.Application.DTOs.registration.CustomerAddressDTO;
 import com.auth.auth.modules.Customer.Application.DTOs.registration.CustomerDTO;
 import com.auth.auth.modules.Customer.Domain.service.CustomerUpdateService;
@@ -51,7 +51,6 @@ public class AutheticationRegisterService implements IAutheticationRegister {
     private PasswordEncoder passwordEncoder;
     private CustomerUpdateService clientServiceImp;
     private UserService userService;
-    private ApplicationEventPublisher eventPublisher;
     private GeneratedTokenAuthorizationService generatedTokenAuthorizationService;
     private AnonymizationService anonymizationService;
     private CustomerRepository customerRepository;
@@ -78,7 +77,6 @@ public class AutheticationRegisterService implements IAutheticationRegister {
         this.passwordEncoder = passwordEncoder;
         this.clientServiceImp = clientServiceImp;
         this.userService = userService;
-        this.eventPublisher = eventPublisher;
         this.generatedTokenAuthorizationService = generatedTokenAuthorizationService;
         this.anonymizationService = anonymizationService;
         this.customerRepository = customerRepository;
@@ -133,8 +131,8 @@ public class AutheticationRegisterService implements IAutheticationRegister {
             String emailAnonymization = anonymizationService.encrypt(customerDTO.getEmail());
             String cpfAnonymization = anonymizationService.encrypt(customerDTO.getCpf());
             String hashedPassword = passwordEncoder.encode(customerDTO.getPassword());
-            CustomerEntity newCustomerEntity = createNewCustomerEntity(customerDTO, emailAnonymization,cpfAnonymization);
-            UserEntity newUserEntity = createUserEntity(customerDTO, hashedPassword, newCustomerEntity,emailAnonymization);
+            CustomerEntity newCustomerEntity = createNewCustomerEntity(customerDTO, cpfAnonymization);
+            UserEntity newUserEntity = createUserEntity(customerDTO, hashedPassword, newCustomerEntity, emailAnonymization);
             userRepository.save(newUserEntity);
 
             CustomerAddressEntity newAddressEntityCustomer = createNewAddressEntityCustomer(customerAddressDTO);
@@ -159,15 +157,15 @@ public class AutheticationRegisterService implements IAutheticationRegister {
         }
     }
 
-    private CustomerEntity createNewCustomerEntity(CustomerDTO customerDTO,
-            String emailAnonymization,
-            String cpfAnonymization) {
+    private CustomerEntity createNewCustomerEntity(
+        CustomerDTO customerDTO,
+        String cpfAnonymization
+    ) {
         ModelMappersConvertion<CustomerDTO, CustomerEntity> customerDto = new ModelMappersConvertion<>(
                     new ModelMapper());
         CustomerEntity newCustomerModelMapperEntity = customerDto.toDTOFromEntity(customerDTO, CustomerEntity.class);
         newCustomerModelMapperEntity.setDateCreate(new Date());
         newCustomerModelMapperEntity.setCpf(cpfAnonymization);
-        newCustomerModelMapperEntity.setEmail(emailAnonymization);
         return newCustomerModelMapperEntity;
     }
 

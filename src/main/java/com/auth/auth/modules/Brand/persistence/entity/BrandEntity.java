@@ -27,8 +27,8 @@ import lombok.EqualsAndHashCode;
 @Lazy
 @Data
 @Entity
-@EqualsAndHashCode(of = "idmarca")
 @Table(name = "fornecedor_marca")
+@EqualsAndHashCode(of = "idBrand")
 public class BrandEntity implements Serializable {
     
     /**

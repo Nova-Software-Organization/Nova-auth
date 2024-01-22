@@ -24,8 +24,8 @@ import lombok.EqualsAndHashCode;
 @Lazy
 @Data
 @Entity
-@EqualsAndHashCode(of = "id")
 @Table(name = "produto_categoria")
+@EqualsAndHashCode(of = "idCategory")
 public class ProductCategoryEntity implements Serializable {
     private static final long serialVersionUID = 1L;
     
@@ -35,7 +35,7 @@ public class ProductCategoryEntity implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_categoria")
-    private Long id;
+    private Long idCategory;
 
     /**
      * Nome da categoria de produto.

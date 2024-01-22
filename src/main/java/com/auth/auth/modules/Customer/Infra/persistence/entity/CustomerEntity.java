@@ -12,11 +12,11 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
+import org.springframework.data.annotation.CreatedDate;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import com.auth.auth.modules.Auth.Infra.persistence.entity.UserEntity;
 import com.auth.auth.modules.Cart.Infra.persistence.entity.CartEntity;
-import com.auth.auth.modules.Customer.Application.DTOs.registration.CustomerDTO;
 import com.auth.auth.modules.CustomerAddress.Infra.persistence.entity.CustomerAddressEntity;
 import com.auth.auth.modules.Order.infra.persistence.entity.OrderEntity;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -108,14 +108,6 @@ public class CustomerEntity implements Serializable {
     private String gender;
 
     /**
-     * Email do cliente.
-     */
-    @NotBlank(message = "O email não pode estar em branco")
-    @Size(max = 100, message = "O email deve ter no máximo 100 caracteres")
-    @Column(name = "email", unique = true)
-    private String email;
-
-    /**
      * Usuário associado ao cliente.
      */
     @OneToOne
@@ -131,6 +123,7 @@ public class CustomerEntity implements Serializable {
     /**
      * Data de criação da conta do cliente
      */
+    @CreatedDate
     @DateTimeFormat(pattern= "dd-MM-yyyy")
     @Column(name = "date_criacao")
     private Date dateCreate;
@@ -146,18 +139,6 @@ public class CustomerEntity implements Serializable {
      */
     @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL)
     private List<CartEntity> cartEntity;
-
-    public CustomerEntity(CustomerDTO customerDTO) {
-        this.name = customerDTO.getName();
-        this.lastName = customerDTO.getLastName();
-        this.cpf = customerDTO.getCpf();
-        this.phone = customerDTO.getPhone();
-        this.age = customerDTO.getAge();
-        this.gender = customerDTO.getGender();
-        this.email = customerDTO.getEmail();
-        this.dateCreate = customerDTO.getDateCreate();
-        this.birthDate = customerDTO.getBirthDate();
-    }
 
     public CustomerEntity() {}
 }

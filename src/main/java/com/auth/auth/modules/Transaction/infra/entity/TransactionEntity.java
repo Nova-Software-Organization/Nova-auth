@@ -21,11 +21,13 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 @Lazy
 @Data
 @Entity
 @Table(name = "transacao")
+@EqualsAndHashCode(of = "idTransaction")
 public class TransactionEntity implements Serializable {
     
     private static final long serialVersionUID = 1L;
@@ -36,7 +38,7 @@ public class TransactionEntity implements Serializable {
     @Id
     @Column(name = "id_transacao")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long idTransaction;
 
     /**
      * Número do cartão associado à transação.

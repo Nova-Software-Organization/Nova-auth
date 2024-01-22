@@ -14,6 +14,7 @@ import java.util.Collections;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import org.springframework.data.annotation.CreatedDate;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -85,6 +86,7 @@ public class UserEntity implements UserDetails {
     /**
      * Expiração do token de renovação de senha do usuário.
      */
+    @CreatedDate
     @Column(name = "reset_password_token_expiration")
     private LocalDateTime resetPasswordTokenExpiration;
 

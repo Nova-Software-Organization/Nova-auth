@@ -30,7 +30,7 @@ public class ContactEntity implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-      /**
+    /**
      * Identificador único do contato.
      */
     @Id
