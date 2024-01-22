@@ -7,6 +7,7 @@
  */
 package com.auth.auth.modules.Auth.Domain.authentication;
 
+import java.net.URI;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -15,10 +16,12 @@ import java.util.Set;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.auth.auth.modules.Auth.Application.DTOs.response.ResponseMessageDTO;
 import com.auth.auth.modules.Auth.Domain.Enum.CustomGrantedAuthority;
@@ -139,15 +142,22 @@ public class AutheticationRegisterService implements IAutheticationRegister {
             newCustomerEntity.setAddress(newAddressEntityCustomer);
             newCustomerEntity.setUser(newUserEntity);
 
+            
             CustomerEntity savedClient = customerRepository.save(newCustomerEntity);
             Set<CustomGrantedAuthority> userRoles = userRolesDeterminesComponent.determineUserRoles(customerDTO);
             String jwtToken = generatedTokenAuthorizationService.generateToken(newUserEntity.getUsername(), userRoles);
             newCustomerEntity.setUser(newUserEntity);
             authCreatedPublishEventListenerComponent.publishCustomerCreatedEvent(newUserEntity);
             
+            URI location = ServletUriComponentsBuilder.fromCurrentRequest()
+                   .path("/{id}")
+                   .buildAndExpand(savedClient.getId())
+                   .toUri();
+            
             log.info("usuario criado com sucesso {}");
-            return ResponseEntity.status(HttpStatus.CREATED).body(
-                    new ResponseMessageDTO("Usuário registrado com sucesso!",
+            return ResponseEntity.status(HttpStatus.CREATED)
+                    .header(HttpHeaders.LOCATION, location.toString())
+                    .body(new ResponseMessageDTO("Usuário registrado com sucesso!",
                             this.getClass().getSimpleName(), null, jwtToken));
         } catch (Exception e) {
             log.error("Ocorreu um erro ao processar a requisição!", e.getMessage());

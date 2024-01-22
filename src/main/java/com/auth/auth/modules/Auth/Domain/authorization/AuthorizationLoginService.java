@@ -11,6 +11,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -54,7 +55,6 @@ public class AuthorizationLoginService implements IAutheticationLogin {
     public ResponseEntity<LoginResponseDTO> login(@RequestBody @Valid LoginRequest loginRequest) {
         try {
             validateLoginRequest(loginRequest);
-
             authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
             Set<CustomGrantedAuthority> userRoles = userRepository.findByUsername(loginRequest.getUsername())
@@ -63,8 +63,13 @@ public class AuthorizationLoginService implements IAutheticationLogin {
             String tokenGeneration = generatedTokenAuthorizationService.generateToken(loginRequest.getUsername(),
                     customAuthorities);
 
+            HttpHeaders headers = new HttpHeaders();
+            headers.add(HttpHeaders.AUTHORIZATION, "Bearer " + tokenGeneration);
+            
             LoginResponseDTO loginResponseDTO = new LoginResponseDTO(tokenGeneration);
-            return ResponseEntity.status(HttpStatus.CREATED).body(loginResponseDTO);
+            return ResponseEntity.status(HttpStatus.OK)
+            .headers(headers)
+            .body(loginResponseDTO);
         } catch (IllegalArgumentException e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(
                     new LoginResponseDTO("Usuário não autorizado! Os campos de usuário e senha são obrigatórios."));
