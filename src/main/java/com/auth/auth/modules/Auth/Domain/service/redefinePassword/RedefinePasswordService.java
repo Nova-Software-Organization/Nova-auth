@@ -21,7 +21,7 @@ import com.auth.auth.modules.Auth.Domain.provider.resetPassword.CodeExpiration;
 import com.auth.auth.modules.Auth.Domain.service.cryptography.AnonymizationService;
 import com.auth.auth.modules.Auth.Infra.persistence.entity.UserEntity;
 import com.auth.auth.modules.Auth.Infra.persistence.repository.UserRepository;
-import com.auth.auth.modules.Auth.Infra.validation.AuthenticationValidationServiceHandler;
+import com.auth.auth.modules.Auth.Infra.validation.utils.PasswordValidator;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -30,20 +30,17 @@ import lombok.extern.slf4j.Slf4j;
 public class RedefinePasswordService {
     private UserRepository userRepository;
     private AnonymizationService anonymizationService;
-    private AuthenticationValidationServiceHandler authenticationValidationServiceHandler;
     private CodeExpiration codeExpiration;
     private AuthRedefinePasswordConcludedPublishEventListenerComponent authRedefinePasswordConcludedPublishEventListenerComponent;
 
     @Autowired
     public RedefinePasswordService(UserRepository userRepository,
             AnonymizationService anonymizationService,
-            AuthenticationValidationServiceHandler authenticationValidationServiceHandler,
             CodeExpiration codeExpiration,
             AuthRedefinePasswordConcludedPublishEventListenerComponent authRedefinePasswordConcludedPublishEventListenerComponent
     ) {
         this.userRepository = userRepository;
         this.anonymizationService = anonymizationService;
-        this.authenticationValidationServiceHandler = authenticationValidationServiceHandler;
         this.codeExpiration = codeExpiration;
         this.authRedefinePasswordConcludedPublishEventListenerComponent = authRedefinePasswordConcludedPublishEventListenerComponent;
     }
@@ -51,7 +48,6 @@ public class RedefinePasswordService {
     public ResponseEntity<ResponseMessageDTO> execute(TokenResetPasswordDTO tokenResetPasswordDTO) {
         try {
             boolean isCodeValidad = codeExpiration.isCodeExpired(tokenResetPasswordDTO.getTokenPassword());
-
             if (!isCodeValidad) {
                 log.info("Codigo inválido: {}");
                 return ResponseEntity
@@ -65,7 +61,8 @@ public class RedefinePasswordService {
                 UserEntity user = userOptional.get();
                 String newPassword = tokenResetPasswordDTO.getNewPassword();
 
-                if (authenticationValidationServiceHandler.isValidPassword(newPassword) != null) {
+                String validPassword = new PasswordValidator().isValidPassword(newPassword);
+                if (validPassword != null) {
                     String anonymizedNewPassword = anonymizationService.encrypt(newPassword);
                     user.setPassword(anonymizedNewPassword);
                     userRepository.save(user);
@@ -84,7 +81,7 @@ public class RedefinePasswordService {
                                     "A nova senha não atende aos requisitos de segurança", null));
                 }
             } else {
-                log.warn("Nenhum usuário encontrado para o token de redefinição de senha fornecido");
+                log.warn("Nenhum usuário encontrado para o token de redefinição de senha fornecido : {}");
                 return ResponseEntity
                         .status(HttpStatus.NOT_FOUND)
                         .body(new ResponseMessageDTO("Erro", this.getClass().getName(),

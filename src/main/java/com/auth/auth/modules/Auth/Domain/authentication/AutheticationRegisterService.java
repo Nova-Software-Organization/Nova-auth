@@ -30,7 +30,6 @@ import com.auth.auth.modules.Auth.Domain.service.user.UserService;
 import com.auth.auth.modules.Auth.Domain.token.GeneratedTokenAuthorizationService;
 import com.auth.auth.modules.Auth.Infra.persistence.entity.UserEntity;
 import com.auth.auth.modules.Auth.Infra.persistence.repository.UserRepository;
-import com.auth.auth.modules.Auth.Infra.validation.AuthenticationValidationServiceHandler;
 import com.auth.auth.modules.Auth.Infra.validation.utils.DocumentValidator;
 import com.auth.auth.modules.Auth.Infra.validation.utils.EmailValidator;
 import com.auth.auth.modules.Auth.Infra.validation.utils.PasswordValidator;
@@ -54,7 +53,6 @@ public class AutheticationRegisterService implements IAutheticationRegister {
     private UserService userService;
     private ApplicationEventPublisher eventPublisher;
     private GeneratedTokenAuthorizationService generatedTokenAuthorizationService;
-    private AuthenticationValidationServiceHandler autheticationValidationServiceHandler;
     private AnonymizationService anonymizationService;
     private CustomerRepository customerRepository;
     private UserRepository userRepository;
@@ -64,13 +62,24 @@ public class AutheticationRegisterService implements IAutheticationRegister {
 
     @Autowired
 
-    public AutheticationRegisterService(PasswordEncoder passwordEncoder, CustomerUpdateService clientServiceImp, UserService userService, ApplicationEventPublisher eventPublisher, GeneratedTokenAuthorizationService generatedTokenAuthorizationService, AuthenticationValidationServiceHandler autheticationValidationServiceHandler, AnonymizationService anonymizationService, CustomerRepository customerRepository, UserRepository userRepository, CustomerAddressRepository customerAddressRepository, AuthCreatedPublishEventListenerComponent authCreatedPublishEventListenerComponent, UserRolesDeterminesComponent userRolesDeterminesComponent) {
+    public AutheticationRegisterService(
+           PasswordEncoder passwordEncoder,
+           CustomerUpdateService clientServiceImp,
+           UserService userService,
+           ApplicationEventPublisher eventPublisher,
+           GeneratedTokenAuthorizationService generatedTokenAuthorizationService,
+           AnonymizationService anonymizationService,
+           CustomerRepository customerRepository,
+           UserRepository userRepository,
+           CustomerAddressRepository customerAddressRepository,
+           AuthCreatedPublishEventListenerComponent authCreatedPublishEventListenerComponent,
+           UserRolesDeterminesComponent userRolesDeterminesComponent
+    ) {
         this.passwordEncoder = passwordEncoder;
         this.clientServiceImp = clientServiceImp;
         this.userService = userService;
         this.eventPublisher = eventPublisher;
         this.generatedTokenAuthorizationService = generatedTokenAuthorizationService;
-        this.autheticationValidationServiceHandler = autheticationValidationServiceHandler;
         this.anonymizationService = anonymizationService;
         this.customerRepository = customerRepository;
         this.userRepository = userRepository;

@@ -10,7 +10,7 @@ package com.auth.auth.modules.Auth.Application.useCases.RedefinePassword;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -30,7 +30,7 @@ public class RedefinePasswordUserController {
         this.redefinePasswordUserUseCase = redefinePasswordUserUseCase;
     }
 
-    @PostMapping(path = "/redefinir-senha")
+    @PutMapping(path = "/redefinir-senha")
     @Tag(name = "Redefinir Senha", description = "Endpoint para redefinir a senha do usuário")
     @Operation(summary = "Redefinir a senha do usuário com base no token fornecido")
     public ResponseEntity<ResponseMessageDTO> handle(TokenResetPasswordDTO tokenResetPasswordDTO) {

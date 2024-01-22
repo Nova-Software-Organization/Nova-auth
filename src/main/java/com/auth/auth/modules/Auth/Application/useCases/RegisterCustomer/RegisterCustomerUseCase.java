@@ -44,8 +44,8 @@ public class RegisterCustomerUseCase {
                             () -> new IllegalArgumentException("Erro: dados de cliente ou endereço não fornecidos"));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(new ResponseMessageDTO(null, this.getClass().getSimpleName(),
-                            "Erro ao processar a solicitação de registro: " + e.getMessage(), null));
+                    .body(new ResponseMessageDTO("Ocorreu um erro ao tentar processar a requisição!", this.getClass().getSimpleName(),
+                            e.getMessage(), null));
         }
     }
 }
