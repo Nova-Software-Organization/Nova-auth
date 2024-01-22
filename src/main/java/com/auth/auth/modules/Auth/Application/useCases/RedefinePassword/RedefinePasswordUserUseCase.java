@@ -7,13 +7,14 @@
  */
 package com.auth.auth.modules.Auth.Application.useCases.RedefinePassword;
 
-import com.auth.auth.modules.Auth.Application.DTOs.response.ResponseMessageDTO;
-import com.auth.auth.modules.Auth.Application.DTOs.token.TokenResetPasswordDTO;
-import com.auth.auth.modules.Auth.Domain.service.redefinePassword.RedefinePasswordService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+
+import com.auth.auth.modules.Auth.Application.DTOs.response.ResponseMessageDTO;
+import com.auth.auth.modules.Auth.Application.DTOs.token.TokenResetPasswordDTO;
+import com.auth.auth.modules.Auth.Domain.service.redefinePassword.RedefinePasswordService;
 
 @Service
 public class RedefinePasswordUserUseCase {
@@ -26,7 +27,7 @@ public class RedefinePasswordUserUseCase {
 
     public ResponseEntity<ResponseMessageDTO> execute(TokenResetPasswordDTO tokenResetPasswordDTO) {
         try {
-            return redefinePasswordService.execute(tokenResetPasswordDTO);
+            return redefinePasswordService.redefinePassword(tokenResetPasswordDTO);
         } catch (Exception e) {
             return ResponseEntity
                     .status(HttpStatus.INTERNAL_SERVER_ERROR)

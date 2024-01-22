@@ -45,7 +45,7 @@ public class RedefinePasswordService {
         this.authRedefinePasswordConcludedPublishEventListenerComponent = authRedefinePasswordConcludedPublishEventListenerComponent;
     }
 
-    public ResponseEntity<ResponseMessageDTO> execute(TokenResetPasswordDTO tokenResetPasswordDTO) {
+    public ResponseEntity<ResponseMessageDTO> redefinePassword(TokenResetPasswordDTO tokenResetPasswordDTO) {
         try {
             boolean isCodeValidad = codeExpiration.isCodeExpired(tokenResetPasswordDTO.getTokenPassword());
             if (!isCodeValidad) {
@@ -62,7 +62,7 @@ public class RedefinePasswordService {
                 String newPassword = tokenResetPasswordDTO.getNewPassword();
 
                 String validPassword = new PasswordValidator().isValidPassword(newPassword);
-                if (validPassword != null) {
+                if (validPassword.equals(null)) {
                     String anonymizedNewPassword = anonymizationService.encrypt(newPassword);
                     user.setPassword(anonymizedNewPassword);
                     userRepository.save(user);
